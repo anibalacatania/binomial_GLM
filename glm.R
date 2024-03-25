@@ -1,10 +1,11 @@
 library(lme4)
 library(readxl)
+library(car)
 data <- read_excel("harpo.xlsx")
 data$Usuario<-as.factor(data$Usuario)
 data$parrafo<-as.factor(data$parrafo)
 data$modelo<-as.factor(data$modelo)
 str(data)
-M1 <- glm(preferecnia ~ Usuario+ modelo +(1 |parrafo) , data = data, family = binomial)
+M1 <- glmer(preferecnia ~  modelo* (1 |parrafo) *(1 |Usuario) , data = data, family = binomial)
 M1
-anova(M1,test="Chi")
+Anova(M1, type=3)
